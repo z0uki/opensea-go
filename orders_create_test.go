@@ -20,9 +20,9 @@ func init() {
 
 func TestOrdersCreateCollectionOffer(t *testing.T) {
 	req := OrdersCreateCollectionOfferRequest{
-		CollectionSlug:    "bokinftofficial",
+		CollectionSlug:    "autominter-pro-pass",
 		Quantity:          1,
-		PriceWei:          big.NewInt(10040000000000000),
+		PriceWei:          big.NewInt(7040000000000000),
 		ExpirationSeconds: big.NewInt(901),
 	}
 
@@ -36,8 +36,8 @@ func TestOrdersCreateCollectionOffer(t *testing.T) {
 func TestOrdersCreateListings(t *testing.T) {
 	req := OrdersCreateListingsRequest{
 		TokenAddress:      "0x2bdbe17a6f148e686581bb3fb78186aadad9e73d",
-		TokenId:           big.NewInt(673),
-		PriceWei:          big.NewInt(1300000000000000000),
+		TokenId:           big.NewInt(672),
+		PriceWei:          big.NewInt(1190000000000000000),
 		ExpirationSeconds: big.NewInt(10000),
 	}
 

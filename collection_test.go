@@ -10,6 +10,6 @@ func TestCollection(t *testing.T) {
 	if collection, err := client.Collection(&req); err != nil {
 		t.Error(err)
 	} else {
-		t.Log(collection.Fees.SellerFees)
+		t.Log(collection.PrimaryAssetContracts[0].SchemaName)
 	}
 }

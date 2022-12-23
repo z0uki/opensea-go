@@ -59,6 +59,7 @@ func New(fnList ...OptionFn) (*Client, error) {
 			SetCommonHeader(APIKey, o.apiKey).
 			SetCommonContentType("application/json").
 			SetCommonHeader("Accept", "application/json"),
+
 		option: o,
 		wallet: &Wallet{
 			PrivateKey: privateKey,
@@ -89,7 +90,11 @@ func (c *Client) post(resource string, body interface{}) (*req.Response, error) 
 func ObjectParams(v interface{}) map[string]string {
 	m := make(map[string]string)
 	for k, v := range structs.Map(v) {
-		if v != "" && v != nil {
+		//如果类型是切片 且长度为0 则不添加
+		if _, ok := v.([]string); ok && len(v.([]string)) == 0 {
+			continue
+		}
+		if v != "" && v != nil && v != 0 {
 			m[k] = fmt.Sprintf("%v", v)
 		}
 	}

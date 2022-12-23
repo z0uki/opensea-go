@@ -31,6 +31,16 @@ func (c *Client) OrdersCreateListings(req *OrdersCreateListingsRequest) (*Orders
 	}
 	var creatorBasisPoints = big.NewInt(int64(contract.DevSellerFeeBasisPoints))
 	var creatorFees = contract.Collection.Fees.SellerFees
+	//获取合约类型 erc721 or erc1155
+	var contractType uint8
+	switch contract.SchemaName {
+	case "ERC721":
+		contractType = ItemType_ERC721
+	case "ERC1155":
+		contractType = ItemType_ERC1155
+	default:
+		return nil, fmt.Errorf("contract type error")
+	}
 
 	// 2. 检查是否授权
 	approved, err := c.IsApproved(common.HexToAddress(req.TokenAddress))
@@ -47,7 +57,7 @@ func (c *Client) OrdersCreateListings(req *OrdersCreateListingsRequest) (*Orders
 	}
 
 	// 3. 构建订单
-	order, err := c.buildSellOrder(req, creatorBasisPoints, creatorFees)
+	order, err := c.buildSellOrder(req, creatorBasisPoints, creatorFees, contractType)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +79,7 @@ func (c *Client) OrdersCreateListings(req *OrdersCreateListingsRequest) (*Orders
 // OrdersCreateCollectionOffer 发送集合offer
 func (c *Client) OrdersCreateCollectionOffer(req *OrdersCreateCollectionOfferRequest) (*OrdersCreateCollectionOfferResponse, error) {
 
-	// 1. 获取版税信息
+	// 1. 获取系列信息
 	collection, err := c.Collection(&CollectionRequest{CollectionSlug: req.CollectionSlug})
 	if err != nil {
 		return nil, err
@@ -129,14 +139,14 @@ type OrdersCreateCollectionOfferResponse struct {
 	ProtocolData *model.Protocol `json:"protocol_data"`
 }
 
-func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorBasisPoints *big.Int, creatorFees *model.Fee) (*model.Protocol, error) {
+func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorBasisPoints *big.Int, creatorFees *model.Fee, contractType uint8) (*model.Protocol, error) {
 	startTime := time.Now().Unix()
 	endTime := startTime + req.ExpirationSeconds.Int64()
 	rand.Seed(time.Now().UnixNano())
 	salt := rand.Int63n(1000000000)
 
 	sellerFee := model.ConsiderationItem{
-		ItemType:             0,
+		ItemType:             ItemType_NATIVE,
 		Token:                ZeroAddress,
 		IdentifierOrCriteria: "0",
 		StartAmount:          strconv.FormatInt(CalcEarnings(req.PriceWei, creatorBasisPoints), 10),
@@ -145,7 +155,7 @@ func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorBasisPo
 	}
 
 	platformFee := model.ConsiderationItem{
-		ItemType:             0,
+		ItemType:             ItemType_NATIVE,
 		Token:                ZeroAddress,
 		IdentifierOrCriteria: "0",
 		StartAmount:          strconv.FormatInt(CalcOpenSeaFeeByBasePrice(req.PriceWei), 10),
@@ -157,7 +167,7 @@ func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorBasisPo
 
 	for recipient, points := range *creatorFees {
 		collectionSellerFees := model.ConsiderationItem{
-			ItemType:             0,
+			ItemType:             ItemType_NATIVE,
 			Token:                ZeroAddress,
 			IdentifierOrCriteria: "0",
 			StartAmount:          strconv.FormatInt(CalcFeeByBasisPoints(req.PriceWei, points), 10),
@@ -171,7 +181,7 @@ func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorBasisPo
 		Offerer: c.wallet.Address.Hex(),
 		Offer: []model.OfferItem{
 			{
-				ItemType:             2, // ERC721
+				ItemType:             contractType,
 				Token:                req.TokenAddress,
 				IdentifierOrCriteria: req.TokenId.String(),
 				StartAmount:          "1",
@@ -221,6 +231,8 @@ func (c *Client) buildCollectionOffer(req *OrdersCreateCollectionOfferRequest, c
 		return nil, err
 	}
 
+	fmt.Println(rsp)
+
 	tokenConsideration := model.ConsiderationItem{
 		ItemType:             uint8(gjson.Get(rsp.String(), "partialParameters.consideration.0.itemType").Uint()),
 		Token:                gjson.Get(rsp.String(), "partialParameters.consideration.0.token").String(),
@@ -231,7 +243,7 @@ func (c *Client) buildCollectionOffer(req *OrdersCreateCollectionOfferRequest, c
 	}
 
 	platformFee := model.ConsiderationItem{
-		ItemType:             1,
+		ItemType:             ItemType_ERC20,
 		Token:                WethAddress,
 		IdentifierOrCriteria: "0",
 		StartAmount:          strconv.FormatInt(CalcOpenSeaFeeByBasePrice(req.PriceWei), 10),
@@ -243,7 +255,7 @@ func (c *Client) buildCollectionOffer(req *OrdersCreateCollectionOfferRequest, c
 
 	for recipient, points := range *creatorFees {
 		collectionSellerFees := model.ConsiderationItem{
-			ItemType:             1,
+			ItemType:             ItemType_ERC20,
 			Token:                WethAddress,
 			IdentifierOrCriteria: "0",
 			StartAmount:          strconv.FormatInt(CalcFeeByBasisPoints(req.PriceWei, points), 10),
@@ -262,7 +274,7 @@ func (c *Client) buildCollectionOffer(req *OrdersCreateCollectionOfferRequest, c
 		Offerer: c.wallet.Address.Hex(),
 		Offer: []model.OfferItem{
 			{
-				ItemType:             1,
+				ItemType:             ItemType_ERC20,
 				Token:                WethAddress,
 				IdentifierOrCriteria: "0",
 				StartAmount:          req.PriceWei.String(),

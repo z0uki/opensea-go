@@ -15,6 +15,15 @@ const (
 	ZeroAddress         = "0x0000000000000000000000000000000000000000"
 )
 
+const (
+	ItemType_NATIVE                uint8 = 0
+	ItemType_ERC20                 uint8 = 1
+	ItemType_ERC721                uint8 = 2
+	ItemType_ERC1155               uint8 = 3
+	ItemType_ERC721_WITH_CRITERIA  uint8 = 4
+	ItemType_ERC1155_WITH_CRITERIA uint8 = 5
+)
+
 type SellType int64
 
 type Wallet struct {

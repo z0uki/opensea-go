@@ -151,7 +151,7 @@ func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorBasisPo
 		IdentifierOrCriteria: "0",
 		StartAmount:          strconv.FormatInt(CalcEarnings(req.PriceWei, creatorBasisPoints), 10),
 		EndAmount:            strconv.FormatInt(CalcEarnings(req.PriceWei, creatorBasisPoints), 10),
-		Recipient:            c.wallet.Address.Hex(),
+		Recipient:            c.Wallet.Address.Hex(),
 	}
 
 	platformFee := model.ConsiderationItem{
@@ -178,7 +178,7 @@ func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorBasisPo
 	}
 
 	parameters := model.Parameters{
-		Offerer: c.wallet.Address.Hex(),
+		Offerer: c.Wallet.Address.Hex(),
 		Offer: []model.OfferItem{
 			{
 				ItemType:             contractType,
@@ -217,7 +217,7 @@ func (c *Client) buildCollectionOffer(req *OrdersCreateCollectionOfferRequest, c
 
 	// getTokenConsideration
 	body := map[string]interface{}{
-		"offerer":  c.wallet.Address,
+		"offerer":  c.Wallet.Address,
 		"quantity": req.Quantity,
 		"criteria": map[string]interface{}{
 			"collection": map[string]interface{}{
@@ -271,7 +271,7 @@ func (c *Client) buildCollectionOffer(req *OrdersCreateCollectionOfferRequest, c
 	salt := rand.Int63n(1000000000)
 
 	parameters := model.Parameters{
-		Offerer: c.wallet.Address.Hex(),
+		Offerer: c.Wallet.Address.Hex(),
 		Offer: []model.OfferItem{
 			{
 				ItemType:             ItemType_ERC20,
@@ -307,7 +307,7 @@ func (c *Client) buildCollectionOffer(req *OrdersCreateCollectionOfferRequest, c
 }
 
 func (c *Client) signParameters(offer model.Parameters) (string, error) {
-	signer := crypto.NewDefaultSigner(c.wallet.PrivateKey)
+	signer := crypto.NewDefaultSigner(c.Wallet.PrivateKey)
 	messageToSign := eip712.TypedData{
 		Domain: eip712.TypedDataDomain{
 			Name:              "Seaport",

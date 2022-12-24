@@ -23,7 +23,7 @@ type Client struct {
 	*req.Client
 	*option
 
-	wallet  *Wallet
+	Wallet  *Wallet
 	eclient *ethclient.Client
 }
 
@@ -61,7 +61,7 @@ func New(fnList ...OptionFn) (*Client, error) {
 			SetCommonHeader("Accept", "application/json"),
 
 		option: o,
-		wallet: &Wallet{
+		Wallet: &Wallet{
 			PrivateKey: privateKey,
 			Address:    address,
 		},

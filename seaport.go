@@ -17,14 +17,14 @@ var (
 // IsApproved check if the contract is approved
 func (c *Client) IsApproved(operator common.Address) (bool, error) {
 	erc721Instance := erc721.NewErc721Instance(operator)
-	return erc721Instance.IsApprovedForAll(nil, c.wallet.Address, SEAPORT_CONTRACT_ERC721)
+	return erc721Instance.IsApprovedForAll(nil, c.Wallet.Address, SEAPORT_CONTRACT_ERC721)
 }
 
 // SetApprovalForAll set approval for all
 func (c *Client) SetApprovalForAll(operator common.Address) (*types.Receipt, error) {
 	erc721Instance := erc721.NewErc721Instance(operator)
 
-	Opts, err := bind.NewKeyedTransactorWithChainID(c.wallet.PrivateKey, big.NewInt(1))
+	Opts, err := bind.NewKeyedTransactorWithChainID(c.Wallet.PrivateKey, big.NewInt(1))
 	if err != nil {
 		return nil, err
 	}

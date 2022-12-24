@@ -1,4 +1,4 @@
-package wethc
+package weth
 
 import "testing"
 

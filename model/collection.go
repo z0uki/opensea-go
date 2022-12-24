@@ -88,37 +88,37 @@ type PaymentToken struct {
 	ID       int              `opensea:"id" json:"id"`
 	Symbol   string           `opensea:"symbol" json:"symbol"`
 	Address  string           `opensea:"address" json:"address"`
-	ImageURL string           `opensea:"image_url" json:"imageURL"`
+	ImageURL string           `opensea:"image_url" json:"image_url"`
 	Name     string           `opensea:"name" json:"name"`
 	Decimals int              `opensea:"decimals" json:"decimals"`
-	EthPrice *decimal.Decimal `opensea:"eth_price" json:"ethPrice"`
-	UsdPrice *decimal.Decimal `opensea:"usd_price" json:"usdPrice"`
+	EthPrice *decimal.Decimal `opensea:"eth_price" json:"eth_price"`
+	UsdPrice *decimal.Decimal `opensea:"usd_price" json:"usd_price"`
 }
 
 type CollectionStats struct {
-	OneDayVolume          float64 `opensea:"one_day_volume" json:"oneDayVolume"`
-	OneDayChange          float64 `opensea:"one_day_change" json:"oneDayChange"`
-	OneDaySales           float64 `opensea:"one_day_sales" json:"oneDaySales"`
-	OneDayAveragePrice    float64 `opensea:"one_day_average_price" json:"oneDayAveragePrice"`
-	SevenDayVolume        float64 `opensea:"seven_day_volume" json:"sevenDayVolume"`
-	SevenDayChange        float64 `opensea:"seven_day_change" json:"sevenDayChange"`
-	SevenDaySales         float64 `opensea:"seven_day_sales" json:"sevenDaySales"`
-	SevenDayAveragePrice  float64 `opensea:"seven_day_average_price" json:"sevenDayAveragePrice"`
-	ThirtyDayVolume       float64 `opensea:"thirty_day_volume" json:"thirtyDayVolume"`
-	ThirtyDayChange       float64 `opensea:"thirty_day_change" json:"thirtyDayChange"`
-	ThirtyDaySales        float64 `opensea:"thirty_day_sales" json:"thirtyDaySales"`
-	ThirtyDayAveragePrice float64 `opensea:"thirty_day_average_price" json:"thirtyDayAveragePrice"`
-	TotalVolume           float64 `opensea:"total_volume" json:"totalVolume"`
-	TotalSales            float64 `opensea:"total_sales" json:"totalSales"`
-	TotalSupply           float64 `opensea:"total_supply" json:"totalSupply"`
+	OneDayVolume          float64 `opensea:"one_day_volume" json:"one_day_volume"`
+	OneDayChange          float64 `opensea:"one_day_change" json:"one_day_change"`
+	OneDaySales           float64 `opensea:"one_day_sales" json:"one_day_sales"`
+	OneDayAveragePrice    float64 `opensea:"one_day_average_price" json:"one_day_average_price"`
+	SevenDayVolume        float64 `opensea:"seven_day_volume" json:"seven_day_volume"`
+	SevenDayChange        float64 `opensea:"seven_day_change" json:"seven_day_change"`
+	SevenDaySales         float64 `opensea:"seven_day_sales" json:"seven_day_sales"`
+	SevenDayAveragePrice  float64 `opensea:"seven_day_average_price" json:"seven_day_average_price"`
+	ThirtyDayVolume       float64 `opensea:"thirty_day_volume" json:"thirty_day_volume"`
+	ThirtyDayChange       float64 `opensea:"thirty_day_change" json:"thirty_day_change"`
+	ThirtyDaySales        float64 `opensea:"thirty_day_sales" json:"thirty_day_sales"`
+	ThirtyDayAveragePrice float64 `opensea:"thirty_day_average_price" json:"thirty_day_average_price"`
+	TotalVolume           float64 `opensea:"total_volume" json:"total_volume"`
+	TotalSales            float64 `opensea:"total_sales" json:"total_sales"`
+	TotalSupply           float64 `opensea:"total_supply" json:"total_supply"`
 	Count                 float64 `opensea:"count" json:"count"`
-	NumOwners             int     `opensea:"num_owners" json:"numOwners"`
-	AveragePrice          float64 `opensea:"average_price" json:"averagePrice"`
-	NumReports            int     `opensea:"num_reports" json:"numReports"`
-	MarketCap             float64 `opensea:"market_cap" json:"marketCap"`
-	FloorPrice            float64 `opensea:"floor_price" json:"floorPrice"`
+	NumOwners             int     `opensea:"num_owners" json:"num_owners"`
+	AveragePrice          float64 `opensea:"average_price" json:"average_price"`
+	NumReports            int     `opensea:"num_reports" json:"num_reports"`
+	MarketCap             float64 `opensea:"market_cap" json:"market_cap"`
+	FloorPrice            float64 `opensea:"floor_price" json:"floor_price"`
 }
 
 type DisplayData struct {
-	CardDisplayStyle string `opensea:"card_display_style" json:"cardDisplayStyle"`
+	CardDisplayStyle string `opensea:"card_display_style" json:"card_display_style"`
 }

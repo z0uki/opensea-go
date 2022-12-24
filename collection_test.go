@@ -1,15 +1,17 @@
 package opensea
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestCollection(t *testing.T) {
 	req := CollectionRequest{
-		CollectionSlug: "dragonkitty-v3",
+		CollectionSlug: "playerone-1p",
 	}
 
 	if collection, err := client.Collection(&req); err != nil {
 		t.Error(err)
 	} else {
-		t.Log(collection.PrimaryAssetContracts[0].SchemaName)
+		t.Log(int64(collection.Stats.FloorPrice * 1000000000000000000))
 	}
 }

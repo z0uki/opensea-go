@@ -67,7 +67,7 @@ func (c *Client) OrdersCreateListings(req *OrdersCreateListingsRequest) (*Orders
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(rsp)
+	//fmt.Println(rsp)
 	var response OrdersCreateListingsResponse
 	if err := ParseRsp(rsp, &response); err != nil {
 		return nil, err
@@ -97,7 +97,7 @@ func (c *Client) OrdersCreateCollectionOffer(req *OrdersCreateCollectionOfferReq
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(rsp)
+	//fmt.Println(rsp)
 	var response OrdersCreateCollectionOfferResponse
 	if err := ParseRsp(rsp, &response); err != nil {
 		return nil, err

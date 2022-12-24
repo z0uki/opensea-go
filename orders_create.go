@@ -231,7 +231,7 @@ func (c *Client) buildCollectionOffer(req *OrdersCreateCollectionOfferRequest, c
 		return nil, err
 	}
 
-	fmt.Println(rsp)
+	//fmt.Println(rsp)
 
 	tokenConsideration := model.ConsiderationItem{
 		ItemType:             uint8(gjson.Get(rsp.String(), "partialParameters.consideration.0.itemType").Uint()),
@@ -322,7 +322,6 @@ func (c *Client) signParameters(offer model.Parameters) (string, error) {
 
 	signature, err := signer.SignTypedData(&messageToSign)
 	if err != nil {
-		fmt.Println("Failed to sign typed data", err)
 		return "", err
 	}
 	return "0x" + hex.EncodeToString(signature), nil

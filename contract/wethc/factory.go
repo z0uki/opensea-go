@@ -1,4 +1,4 @@
-package weth
+package wethc
 
 import (
 	"github.com/ethereum/go-ethereum/common"

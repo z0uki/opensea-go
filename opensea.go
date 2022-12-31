@@ -34,19 +34,30 @@ func New(fnList ...OptionFn) (*Client, error) {
 	}
 
 	ec, err := ethclient.Dial(RPC_URL)
-
-	privateKey, err := crypto.HexToECDSA(o.privateKey)
 	if err != nil {
-		log.Fatal(err)
 		return nil, err
 	}
 
-	publicKey := privateKey.Public()
-	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
-	if !ok {
-		log.Fatal("cannot assert type: publicKey is not of type *ecdsa.PublicKey")
+	var wallet *Wallet
+
+	if o.privateKey != "" {
+		privateKey, err := crypto.HexToECDSA(o.privateKey)
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+
+		publicKey := privateKey.Public()
+		publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
+		if !ok {
+			log.Fatal("cannot assert type: publicKey is not of type *ecdsa.PublicKey")
+		}
+		address := crypto.PubkeyToAddress(*publicKeyECDSA)
+		wallet = &Wallet{
+			Address:    address,
+			PrivateKey: privateKey,
+		}
 	}
-	address := crypto.PubkeyToAddress(*publicKeyECDSA)
 
 	return &Client{
 		Client: req.NewClient().
@@ -60,11 +71,8 @@ func New(fnList ...OptionFn) (*Client, error) {
 			SetCommonContentType("application/json").
 			SetCommonHeader("Accept", "application/json"),
 
-		option: o,
-		Wallet: &Wallet{
-			PrivateKey: privateKey,
-			Address:    address,
-		},
+		option:  o,
+		Wallet:  wallet,
 		eclient: ec,
 	}, nil
 }

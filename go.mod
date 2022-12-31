@@ -8,6 +8,8 @@ require (
 	github.com/fatih/structs v1.1.0
 	github.com/imroc/req/v3 v3.26.5
 	github.com/joho/godotenv v1.4.0
+	github.com/mitchellh/mapstructure v1.4.1
+	github.com/nshafer/phx v0.2.0
 	github.com/shopspring/decimal v1.3.1
 	github.com/tidwall/gjson v1.14.4
 )
@@ -24,7 +26,7 @@ require (
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20210107165309-348f09dbbbc0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/gorilla/websocket v1.4.2 // indirect
+	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/lucas-clemente/quic-go v0.28.1 // indirect

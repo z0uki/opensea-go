@@ -130,15 +130,18 @@ type CollectionOfferEvent struct {
 	Payload           CollectionOfferEventPayload `mapstructure:"payload"`
 }
 type CollectionOfferEventPayload struct {
-	PayloadItemAndColl `mapstructure:",squash"`
-	BasePrice          string         `mapstructure:"base_price"`
-	Quantity           int            `mapstructure:"quantity"`
-	OrderHash          string         `mapstructure:"order_hash"`
-	ProtocolData       model.Protocol `mapstructure:"protocol_data"`
-	CreatedDate        string         `mapstructure:"created_date"`
-	EventTimestamp     string         `mapstructure:"event_timestamp"`
-	ExpirationDate     string         `mapstructure:"expiration_date"`
-	Maker              Account        `mapstructure:"maker"`
+	PayloadItemAndColl    `mapstructure:",squash"`
+	AssetContractCriteria struct {
+		Address string `mapstructure:"address"`
+	} `mapstructure:"asset_contract_criteria"`
+	BasePrice      string         `mapstructure:"base_price"`
+	Quantity       int            `mapstructure:"quantity"`
+	OrderHash      string         `mapstructure:"order_hash"`
+	ProtocolData   model.Protocol `mapstructure:"protocol_data"`
+	CreatedDate    string         `mapstructure:"created_date"`
+	EventTimestamp string         `mapstructure:"event_timestamp"`
+	ExpirationDate string         `mapstructure:"expiration_date"`
+	Maker          Account        `mapstructure:"maker"`
 }
 
 type BaseItemMetadataType struct {

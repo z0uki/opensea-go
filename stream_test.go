@@ -24,7 +24,7 @@ func TestNewStreamClient(t *testing.T) {
 		if err != nil {
 			fmt.Println("mapstructure.Decode err:", err)
 		}
-		fmt.Println("maker:", collectionOfferEvent.Payload.Maker.Address, "collection name:", collectionOfferEvent.Payload.Collection.Slug, "offer price:", collectionOfferEvent.Payload.BasePrice)
+		fmt.Println("collection name:", collectionOfferEvent.Payload.AssetContractCriteria.Address, "offer price:", collectionOfferEvent.Payload.BasePrice)
 	})
 
 	select {}

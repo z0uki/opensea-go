@@ -5,7 +5,7 @@ import (
 )
 
 func CalcEarnings(price, creatorBasisPoints *big.Int) int64 {
-	return price.Int64() - CalcOpenSeaFeeByBasePrice(price) - CalcFeeByBasisPoints(price, creatorBasisPoints)
+	return price.Int64() - CalcFeeByBasisPoints(price, creatorBasisPoints)
 }
 
 func CalcOpenSeaFeeByBasePrice(price *big.Int) int64 {

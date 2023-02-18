@@ -46,6 +46,7 @@ type Collection struct {
 	// and verified (verified collections)
 	SafelistRequestStatus       string      `opensea:"safelist_request_status" json:"safelist_request_status"`
 	Fees                        Fees        `opensea:"fees" json:"fees"`
+	IsCreatorFeesEnforced       bool        `opensea:"is_creator_fees_enforced" json:"is_creator_fees_enforced"`
 	CreatedDate                 string      `opensea:"created_date" json:"created_date"`
 	DefaultToFiat               bool        `opensea:"default_to_fiat" json:"default_to_fiat"`
 	DevBuyerFeeBasisPoints      string      `opensea:"dev_buyer_fee_basis_points" json:"dev_buyer_fee_basis_points"`

@@ -6,7 +6,9 @@ import (
 	"github.com/nshafer/phx"
 	"github.com/z0uki/opensea-go/model/stream"
 	"os"
+	"strconv"
 	"testing"
+	"time"
 )
 
 func TestNewStreamClient(t *testing.T) {
@@ -24,7 +26,11 @@ func TestNewStreamClient(t *testing.T) {
 		if err != nil {
 			fmt.Println("mapstructure.Decode err:", err)
 		}
-		fmt.Println("collection name:", collectionOfferEvent.Payload.AssetContractCriteria.Address, "offer price:", collectionOfferEvent.Payload.BasePrice)
+		parseInt, err := strconv.ParseInt(collectionOfferEvent.Payload.ProtocolData.Parameters.EndTime, 10, 64)
+		if err != nil {
+			return
+		}
+		fmt.Println("collection name:", (parseInt-time.Now().Unix()+60)/60)
 	})
 
 	select {}

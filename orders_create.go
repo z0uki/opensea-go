@@ -154,16 +154,17 @@ func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorBasisPo
 		Recipient:            c.Wallet.Address.Hex(),
 	}
 
-	platformFee := model.ConsiderationItem{
-		ItemType:             ItemType_NATIVE,
-		Token:                ZeroAddress,
-		IdentifierOrCriteria: "0",
-		StartAmount:          strconv.FormatInt(CalcOpenSeaFeeByBasePrice(req.PriceWei), 10),
-		EndAmount:            strconv.FormatInt(CalcOpenSeaFeeByBasePrice(req.PriceWei), 10),
-		Recipient:            OpenSeaFeeRecipient,
-	}
+	// opensea 修改了协议，不再需要手续费
+	//platformFee := model.ConsiderationItem{
+	//	ItemType:             ItemType_NATIVE,
+	//	Token:                ZeroAddress,
+	//	IdentifierOrCriteria: "0",
+	//	StartAmount:          strconv.FormatInt(CalcOpenSeaFeeByBasePrice(req.PriceWei), 10),
+	//	EndAmount:            strconv.FormatInt(CalcOpenSeaFeeByBasePrice(req.PriceWei), 10),
+	//	Recipient:            OpenSeaFeeRecipient,
+	//}
 
-	considerations := []model.ConsiderationItem{sellerFee, platformFee}
+	considerations := []model.ConsiderationItem{sellerFee}
 
 	for recipient, points := range *creatorFees {
 		collectionSellerFees := model.ConsiderationItem{
@@ -290,7 +291,7 @@ func (c *Client) buildCollectionOffer(req *OrdersCreateCollectionOfferRequest, c
 		Salt:                            strconv.FormatInt(salt, 10),
 		ConduitKey:                      ConduitKey,
 		TotalOriginalConsiderationItems: len(considerations),
-		Counter:                         0,
+		Counter:                         1,
 	}
 
 	signature, err := c.signParameters(parameters)

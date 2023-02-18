@@ -35,10 +35,10 @@ func TestOrdersCreateCollectionOffer(t *testing.T) {
 
 func TestOrdersCreateListings(t *testing.T) {
 	req := OrdersCreateListingsRequest{
-		TokenAddress:      "0x2bdbe17a6f148e686581bb3fb78186aadad9e73d",
-		TokenId:           big.NewInt(672),
-		PriceWei:          big.NewInt(1190000000000000000),
-		ExpirationSeconds: big.NewInt(10000),
+		TokenAddress:      "0x71f67624a8b2f6310e0bc538ff78f843e1d9ee6e",
+		TokenId:           big.NewInt(158),
+		PriceWei:          big.NewInt(110000000000000000),
+		ExpirationSeconds: big.NewInt(3600),
 	}
 
 	if rsp, err := client.OrdersCreateListings(&req); err != nil {

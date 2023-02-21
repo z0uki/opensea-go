@@ -18,6 +18,18 @@ func TestCollection(t *testing.T) {
 	}
 }
 
+func TestCollectionStats(t *testing.T) {
+	req := CollectionRequest{
+		CollectionSlug: "hpprs-collection",
+	}
+
+	if stats, err := client.CollectionStats(&req); err != nil {
+		t.Error(err)
+	} else {
+		t.Log(stats.FloorPrice)
+	}
+}
+
 // EthToWei converts Gwei as a float to Wei as a big int
 func EthToWei(n float64) *big.Int {
 	return floatToBigInt(n, 18)

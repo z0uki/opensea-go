@@ -5,10 +5,18 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"github.com/nshafer/phx"
 	"github.com/z0uki/opensea-go/model/stream"
+	"log"
 	"os"
-	"strconv"
+	"sync/atomic"
 	"testing"
 	"time"
+)
+
+var (
+	ItemListedCount        uint64 = 0
+	CollectionOfferCount   uint64 = 0
+	ItemReceivedBidCount   uint64 = 0
+	ItemReceivedOfferCount uint64 = 0
 )
 
 func TestNewStreamClient(t *testing.T) {
@@ -25,13 +33,51 @@ func TestNewStreamClient(t *testing.T) {
 		err := mapstructure.Decode(response, &collectionOfferEvent)
 		if err != nil {
 			fmt.Println("mapstructure.Decode err:", err)
-		}
-		parseInt, err := strconv.ParseInt(collectionOfferEvent.Payload.ProtocolData.Parameters.EndTime, 10, 64)
-		if err != nil {
 			return
 		}
-		fmt.Println("collection name:", (parseInt-time.Now().Unix()+60)/60)
+		atomic.AddUint64(&CollectionOfferCount, 1)
+		//fmt.Println("collection offer:", collectionOfferEvent.Payload.Quantity)
 	})
 
-	select {}
+	client.OnItemReceivedBid("*", func(response any) {
+		var event stream.ItemReceivedBidEvent
+		err := mapstructure.Decode(response, &event)
+		if err != nil {
+			fmt.Println("mapstructure.Decode err:", err)
+			return
+		}
+		atomic.AddUint64(&ItemReceivedBidCount, 1)
+		//fmt.Println("bid:", event.Payload.Item.NftId)
+	})
+
+	client.OnItemReceivedOffer("*", func(response any) {
+		var event stream.ItemReceivedOfferEvent
+		err := mapstructure.Decode(response, &event)
+		if err != nil {
+			fmt.Println("mapstructure.Decode err:", err)
+			return
+		}
+		atomic.AddUint64(&ItemReceivedOfferCount, 1)
+		//fmt.Println("offer:", event.Payload.Item.NftId)
+	})
+
+	client.OnItemListed("*", func(response any) {
+		var event stream.ItemListedEvent
+		err := mapstructure.Decode(response, &event)
+		if err != nil {
+			fmt.Println("mapstructure.Decode err:", err)
+			return
+		}
+		atomic.AddUint64(&ItemListedCount, 1)
+		//fmt.Println("list:", event.Payload.Item.NftId)
+	})
+
+	startTime := time.Now()
+
+	for {
+		log.Printf("挂单数量: %d, 收到bid数量: %d, 收到collection_offer数量: %d 运行时间: %fs\n", ItemListedCount, ItemReceivedBidCount, CollectionOfferCount, time.Now().Sub(startTime).Seconds())
+		time.Sleep(time.Second * 1)
+	}
+
+	//select {}
 }

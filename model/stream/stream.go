@@ -31,16 +31,18 @@ type ItemListedEvent struct {
 
 type ItemListedEventPayload struct {
 	PayloadItemAndColl `mapstructure:",squash"`
-	Quantity           int          `mapstructure:"quantity"`
-	ListingType        string       `mapstructure:"listing_type"`
-	ListingDate        string       `mapstructure:"listing_date"`
-	ExpirationDate     string       `mapstructure:"expiration_date"`
-	Maker              Account      `mapstructure:"maker"`
-	Taker              Account      `mapstructure:"taker"`
-	BasePrice          string       `mapstructure:"base_price"`
-	PaymentToken       PaymentToken `mapstructure:"payment_token"`
-	IsPrivate          bool         `mapstructure:"is_private"`
-	EventTimestamp     string       `mapstructure:"event_timestamp"`
+	Quantity           int            `mapstructure:"quantity"`
+	ListingType        string         `mapstructure:"listing_type"`
+	ListingDate        string         `mapstructure:"listing_date"`
+	ExpirationDate     string         `mapstructure:"expiration_date"`
+	Maker              Account        `mapstructure:"maker"`
+	Taker              Account        `mapstructure:"taker"`
+	BasePrice          string         `mapstructure:"base_price"`
+	PaymentToken       PaymentToken   `mapstructure:"payment_token"`
+	IsPrivate          bool           `mapstructure:"is_private"`
+	EventTimestamp     string         `mapstructure:"event_timestamp"`
+	ProtocolData       model.Protocol `mapstructure:"protocol_data"`
+	ProtocolAddress    string         `mapstructure:"protocol_address"`
 }
 
 type ItemReceivedOfferEvent struct {
@@ -49,14 +51,16 @@ type ItemReceivedOfferEvent struct {
 }
 type ItemReceivedOfferEventPayload struct {
 	PayloadItemAndColl `mapstructure:",squash"`
-	Quantity           int          `mapstructure:"quantity"`
-	CreatedDate        string       `mapstructure:"created_date"`
-	ExpirationDate     string       `mapstructure:"expiration_date"`
-	Maker              Account      `mapstructure:"maker"`
-	Taker              Account      `mapstructure:"taker"`
-	BasePrice          string       `mapstructure:"base_price"`
-	PaymentToken       PaymentToken `mapstructure:"payment_token"`
-	EventTimestamp     string       `mapstructure:"event_timestamp"`
+	Quantity           int            `mapstructure:"quantity"`
+	CreatedDate        string         `mapstructure:"created_date"`
+	ExpirationDate     string         `mapstructure:"expiration_date"`
+	Maker              Account        `mapstructure:"maker"`
+	Taker              Account        `mapstructure:"taker"`
+	BasePrice          string         `mapstructure:"base_price"`
+	PaymentToken       PaymentToken   `mapstructure:"payment_token"`
+	EventTimestamp     string         `mapstructure:"event_timestamp"`
+	ProtocolData       model.Protocol `mapstructure:"protocol_data"`
+	ProtocolAddress    string         `mapstructure:"protocol_address"`
 }
 type ItemReceivedBidEvent struct {
 	BaseStreamMessage `mapstructure:",squash"`
@@ -64,14 +68,16 @@ type ItemReceivedBidEvent struct {
 }
 type ItemReceivedBidEventPayload struct {
 	PayloadItemAndColl `mapstructure:",squash"`
-	Quantity           int          `mapstructure:"quantity"`
-	CreatedDate        string       `mapstructure:"created_date"`
-	ExpirationDate     string       `mapstructure:"expiration_date"`
-	Maker              Account      `mapstructure:"maker"`
-	Taker              Account      `mapstructure:"taker"`
-	BasePrice          string       `mapstructure:"base_price"`
-	PaymentToken       PaymentToken `mapstructure:"payment_token"`
-	EventTimestamp     string       `mapstructure:"event_timestamp"`
+	Quantity           int            `mapstructure:"quantity"`
+	CreatedDate        string         `mapstructure:"created_date"`
+	ExpirationDate     string         `mapstructure:"expiration_date"`
+	Maker              Account        `mapstructure:"maker"`
+	Taker              Account        `mapstructure:"taker"`
+	BasePrice          string         `mapstructure:"base_price"`
+	PaymentToken       PaymentToken   `mapstructure:"payment_token"`
+	EventTimestamp     string         `mapstructure:"event_timestamp"`
+	ProtocolData       model.Protocol `mapstructure:"protocol_data"`
+	ProtocolAddress    string         `mapstructure:"protocol_address"`
 }
 type ItemSoldEvent struct {
 	BaseStreamMessage `mapstructure:",squash"`
@@ -79,15 +85,17 @@ type ItemSoldEvent struct {
 }
 type ItemSoldEventPayload struct {
 	PayloadItemAndColl `mapstructure:",squash"`
-	ListingType        string       `mapstructure:"listing_type"`
-	ClosingDate        string       `mapstructure:"closing_date"`
-	Transaction        Transaction  `mapstructure:"transaction"`
-	Maker              Account      `mapstructure:"maker"`
-	Taker              Account      `mapstructure:"taker"`
-	SalePrice          string       `mapstructure:"sale_price"`
-	PaymentToken       PaymentToken `mapstructure:"payment_token"`
-	IsPrivate          bool         `mapstructure:"is_private"`
-	EventTimestamp     string       `mapstructure:"event_timestamp"`
+	ListingType        string         `mapstructure:"listing_type"`
+	ClosingDate        string         `mapstructure:"closing_date"`
+	Transaction        Transaction    `mapstructure:"transaction"`
+	Maker              Account        `mapstructure:"maker"`
+	Taker              Account        `mapstructure:"taker"`
+	SalePrice          string         `mapstructure:"sale_price"`
+	PaymentToken       PaymentToken   `mapstructure:"payment_token"`
+	IsPrivate          bool           `mapstructure:"is_private"`
+	EventTimestamp     string         `mapstructure:"event_timestamp"`
+	ProtocolData       model.Protocol `mapstructure:"protocol_data"`
+	ProtocolAddress    string         `mapstructure:"protocol_address"`
 }
 type ItemTransferredEvent struct {
 	BaseStreamMessage `mapstructure:",squash"`
@@ -95,11 +103,13 @@ type ItemTransferredEvent struct {
 }
 type ItemTransferredEventPayload struct {
 	PayloadItemAndColl `mapstructure:",squash"`
-	FromAccount        Account     `mapstructure:"from_account"`
-	Quantity           int         `mapstructure:"quantity"`
-	ToAccount          Account     `mapstructure:"to_account"`
-	Transaction        Transaction `mapstructure:"transaction"`
-	EventTimestamp     string      `mapstructure:"event_timestamp"`
+	FromAccount        Account        `mapstructure:"from_account"`
+	Quantity           int            `mapstructure:"quantity"`
+	ToAccount          Account        `mapstructure:"to_account"`
+	Transaction        Transaction    `mapstructure:"transaction"`
+	EventTimestamp     string         `mapstructure:"event_timestamp"`
+	ProtocolData       model.Protocol `mapstructure:"protocol_data"`
+	ProtocolAddress    string         `mapstructure:"protocol_address"`
 }
 type ItemCancelledEvent struct {
 	BaseStreamMessage `mapstructure:",squash"`
@@ -134,14 +144,15 @@ type CollectionOfferEventPayload struct {
 	AssetContractCriteria struct {
 		Address string `mapstructure:"address"`
 	} `mapstructure:"asset_contract_criteria"`
-	BasePrice      string         `mapstructure:"base_price"`
-	Quantity       int            `mapstructure:"quantity"`
-	OrderHash      string         `mapstructure:"order_hash"`
-	ProtocolData   model.Protocol `mapstructure:"protocol_data"`
-	CreatedDate    string         `mapstructure:"created_date"`
-	EventTimestamp string         `mapstructure:"event_timestamp"`
-	ExpirationDate string         `mapstructure:"expiration_date"`
-	Maker          Account        `mapstructure:"maker"`
+	BasePrice       string         `mapstructure:"base_price"`
+	Quantity        int            `mapstructure:"quantity"`
+	OrderHash       string         `mapstructure:"order_hash"`
+	ProtocolData    model.Protocol `mapstructure:"protocol_data"`
+	CreatedDate     string         `mapstructure:"created_date"`
+	EventTimestamp  string         `mapstructure:"event_timestamp"`
+	ExpirationDate  string         `mapstructure:"expiration_date"`
+	Maker           Account        `mapstructure:"maker"`
+	ProtocolAddress string         `mapstructure:"protocol_address"`
 }
 
 type BaseItemMetadataType struct {

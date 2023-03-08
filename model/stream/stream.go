@@ -43,6 +43,7 @@ type ItemListedEventPayload struct {
 	EventTimestamp     string         `mapstructure:"event_timestamp"`
 	ProtocolData       model.Protocol `mapstructure:"protocol_data"`
 	ProtocolAddress    string         `mapstructure:"protocol_address"`
+	OrderHash          string         `mapstructure:"order_hash"`
 }
 
 type ItemReceivedOfferEvent struct {
@@ -61,6 +62,7 @@ type ItemReceivedOfferEventPayload struct {
 	EventTimestamp     string         `mapstructure:"event_timestamp"`
 	ProtocolData       model.Protocol `mapstructure:"protocol_data"`
 	ProtocolAddress    string         `mapstructure:"protocol_address"`
+	OrderHash          string         `mapstructure:"order_hash"`
 }
 type ItemReceivedBidEvent struct {
 	BaseStreamMessage `mapstructure:",squash"`
@@ -78,6 +80,7 @@ type ItemReceivedBidEventPayload struct {
 	EventTimestamp     string         `mapstructure:"event_timestamp"`
 	ProtocolData       model.Protocol `mapstructure:"protocol_data"`
 	ProtocolAddress    string         `mapstructure:"protocol_address"`
+	OrderHash          string         `mapstructure:"order_hash"`
 }
 type ItemSoldEvent struct {
 	BaseStreamMessage `mapstructure:",squash"`
@@ -96,6 +99,7 @@ type ItemSoldEventPayload struct {
 	EventTimestamp     string         `mapstructure:"event_timestamp"`
 	ProtocolData       model.Protocol `mapstructure:"protocol_data"`
 	ProtocolAddress    string         `mapstructure:"protocol_address"`
+	OrderHash          string         `mapstructure:"order_hash"`
 }
 type ItemTransferredEvent struct {
 	BaseStreamMessage `mapstructure:",squash"`

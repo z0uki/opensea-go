@@ -152,6 +152,7 @@ type CollectionOfferEventPayload struct {
 	Quantity        int            `mapstructure:"quantity"`
 	OrderHash       string         `mapstructure:"order_hash"`
 	ProtocolData    model.Protocol `mapstructure:"protocol_data"`
+	PaymentToken    PaymentToken   `mapstructure:"payment_token"`
 	CreatedDate     string         `mapstructure:"created_date"`
 	EventTimestamp  string         `mapstructure:"event_timestamp"`
 	ExpirationDate  string         `mapstructure:"expiration_date"`

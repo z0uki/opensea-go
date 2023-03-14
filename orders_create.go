@@ -198,7 +198,7 @@ func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorBasisPo
 		Salt:                            strconv.FormatInt(salt, 10),
 		ConduitKey:                      ConduitKey,
 		TotalOriginalConsiderationItems: len(considerations),
-		Counter:                         0,
+		Counter:                         "0",
 	}
 
 	signature, err := c.signParameters(parameters)
@@ -291,7 +291,7 @@ func (c *Client) buildCollectionOffer(req *OrdersCreateCollectionOfferRequest, c
 		Salt:                            strconv.FormatInt(salt, 10),
 		ConduitKey:                      ConduitKey,
 		TotalOriginalConsiderationItems: len(considerations),
-		Counter:                         1,
+		Counter:                         "1",
 	}
 
 	signature, err := c.signParameters(parameters)

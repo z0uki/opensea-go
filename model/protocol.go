@@ -17,7 +17,7 @@ type Parameters struct {
 	Salt                            string              `opensea:"salt" json:"salt"`
 	ConduitKey                      string              `opensea:"conduitKey" json:"conduitKey"`
 	TotalOriginalConsiderationItems int                 `opensea:"totalOriginalConsiderationItems" json:"totalOriginalConsiderationItems"`
-	Counter                         int                 `opensea:"counter" json:"counter"`
+	Counter                         string              `opensea:"counter" json:"counter"`
 }
 
 type OfferItem struct {

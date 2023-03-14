@@ -1,12 +1,10 @@
 package opensea
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/mitchellh/mapstructure"
 	"github.com/nshafer/phx"
 	"github.com/z0uki/opensea-go/model/stream"
-	"log"
 	"os"
 	"testing"
 )
@@ -27,21 +25,21 @@ func TestNewStreamClient(t *testing.T) {
 		return
 	}
 
-	client.OnItemCancelled("*", func(response any) {
-		var event stream.ItemCancelledEvent
-		err := mapstructure.Decode(response, &event)
-		if err != nil {
-			log.Println("mapstructure.Decode err:", err)
-			return
-		}
-
-		marshal, err := json.Marshal(event)
-		if err != nil {
-			return
-		}
-
-		fmt.Println(string(marshal))
-	})
+	//client.OnItemCancelled("*", func(response any) {
+	//	var event stream.ItemCancelledEvent
+	//	err := mapstructure.Decode(response, &event)
+	//	if err != nil {
+	//		log.Println("mapstructure.Decode err:", err)
+	//		return
+	//	}
+	//
+	//	marshal, err := json.Marshal(event)
+	//	if err != nil {
+	//		return
+	//	}
+	//
+	//	fmt.Println(string(marshal))
+	//})
 
 	//client.OnCollectionOffer(func(response any) {
 	//	var collectionOfferEvent stream.CollectionOfferEvent
@@ -54,17 +52,16 @@ func TestNewStreamClient(t *testing.T) {
 	//	//fmt.Println("collection offer:", collectionOfferEvent.Payload.Quantity)
 	//})
 	//
-	//client.OnItemReceivedBid("*", func(response any) {
-	//	var event stream.ItemReceivedBidEvent
-	//	err := mapstructure.Decode(response, &event)
-	//	if err != nil {
-	//		fmt.Println("mapstructure.Decode err:", err)
-	//		return
-	//	}
-	//	atomic.AddUint64(&ItemReceivedBidCount, 1)
-	//	fmt.Println(event.Payload.CreatedDate)
-	//	//fmt.Println("bid:", event.Payload.Item.NftId)
-	//})
+	client.OnItemReceivedBid("*", func(response any) {
+		var event stream.ItemReceivedBidEvent
+		err := mapstructure.Decode(response, &event)
+		if err != nil {
+			fmt.Println("mapstructure.Decode err:", err)
+			return
+		}
+		fmt.Println(event.Payload.ProtocolData.Parameters.Counter)
+		//fmt.Println("bid:", event.Payload.Item.NftId)
+	})
 	//
 	//client.OnItemReceivedOffer("*", func(response any) {
 	//	var event stream.ItemReceivedOfferEvent

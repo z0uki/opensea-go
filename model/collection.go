@@ -57,7 +57,7 @@ type Collection struct {
 	IsSubjectToWhitelist        bool        `opensea:"is_subject_to_whitelist" json:"is_subject_to_whitelist"`
 	OnlyProxiedTransfers        bool        `opensea:"only_proxied_transfers" json:"only_proxied_transfers"`
 	OpenseaBuyerFeeBasisPoints  string      `opensea:"opensea_buyer_fee_basis_points" json:"opensea_buyer_fee_basis_points"`
-	OpenseaSellerFeeBasisPoints string      `opensea:"opensea_seller_fee_basis_points" json:"opensea_seller_fee_basis_points"`
+	OpenseaSellerFeeBasisPoints int         `opensea:"opensea_seller_fee_basis_points" json:"opensea_seller_fee_basis_points"`
 	RequireEmail                bool        `opensea:"require_email" json:"require_email"`
 
 	TwitterUsername   *string `opensea:"twitter_username" json:"twitter_username"`

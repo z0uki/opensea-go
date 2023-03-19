@@ -192,7 +192,7 @@ func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorBasisPo
 		Consideration:                   considerations,
 		StartTime:                       strconv.FormatInt(startTime, 10),
 		EndTime:                         strconv.FormatInt(endTime, 10),
-		OrderType:                       2, // PARTIAL_RESTRICTED
+		OrderType:                       0, // PARTIAL_RESTRICTED
 		Zone:                            Zone,
 		ZoneHash:                        ZoneHash,
 		Salt:                            strconv.FormatInt(salt, 10),

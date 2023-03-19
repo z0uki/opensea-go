@@ -312,9 +312,9 @@ func (c *Client) signParameters(offer model.Parameters) (string, error) {
 	messageToSign := eip712.TypedData{
 		Domain: eip712.TypedDataDomain{
 			Name:              "Seaport",
-			Version:           "1.1",
+			Version:           "1.4",
 			ChainId:           math.NewHexOrDecimal256(1),
-			VerifyingContract: "0x00000000006c3852cbEf3e08E8dF289169EdE581",
+			VerifyingContract: "0x00000000000001ad428e4906ae43d8f9852d0dd6",
 		},
 		Types:       TYPES,
 		PrimaryType: "OrderComponents",

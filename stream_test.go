@@ -24,7 +24,6 @@ func TestNewStreamClient(t *testing.T) {
 		fmt.Println("client.Connect err:", err)
 		return
 	}
-
 	//client.OnItemCancelled("*", func(response any) {
 	//	var event stream.ItemCancelledEvent
 	//	err := mapstructure.Decode(response, &event)
@@ -41,17 +40,27 @@ func TestNewStreamClient(t *testing.T) {
 	//	fmt.Println(string(marshal))
 	//})
 
-	//client.OnCollectionOffer(func(response any) {
-	//	var collectionOfferEvent stream.CollectionOfferEvent
-	//	err := mapstructure.Decode(response, &collectionOfferEvent)
-	//	if err != nil {
-	//		fmt.Println("mapstructure.Decode err:", err)
-	//		return
-	//	}
-	//	atomic.AddUint64(&CollectionOfferCount, 1)
-	//	//fmt.Println("collection offer:", collectionOfferEvent.Payload.Quantity)
-	//})
-	//
+	client.OnCollectionOffer(func(response any) {
+		var event stream.CollectionOfferEvent
+		err := mapstructure.Decode(response, &event)
+		if err != nil {
+			fmt.Println("mapstructure.Decode err:", err)
+			return
+		}
+		//atomic.AddUint64(&CollectionOfferCount, 1)
+
+		fmt.Println(event.EventType)
+
+		//for _, c := range event.Payload.ProtocolData.Parameters.Consideration {
+		//	if c.ItemType > 2 {
+		//		in, _ := new(big.Int).SetString(c.IdentifierOrCriteria, 10)
+		//		//fmt.Println(in)
+		//		fmt.Println("list:" + strings.ToLower(c.Token) + ":" + common.BigToHash(in).String())
+		//	}
+		//}
+
+	})
+
 	client.OnItemReceivedBid("*", func(response any) {
 		var event stream.ItemReceivedBidEvent
 		err := mapstructure.Decode(response, &event)
@@ -59,10 +68,10 @@ func TestNewStreamClient(t *testing.T) {
 			fmt.Println("mapstructure.Decode err:", err)
 			return
 		}
-		fmt.Println(event.Payload.ProtocolData.Parameters.Counter)
+		fmt.Println(event.EventType)
 		//fmt.Println("bid:", event.Payload.Item.NftId)
 	})
-	//
+
 	//client.OnItemReceivedOffer("*", func(response any) {
 	//	var event stream.ItemReceivedOfferEvent
 	//	err := mapstructure.Decode(response, &event)
@@ -74,16 +83,16 @@ func TestNewStreamClient(t *testing.T) {
 	//	//fmt.Println("offer:", event.Payload.Item.NftId)
 	//})
 	//
-	//client.OnItemListed("*", func(response any) {
-	//	var event stream.ItemListedEvent
-	//	err := mapstructure.Decode(response, &event)
-	//	if err != nil {
-	//		fmt.Println("mapstructure.Decode err:", err)
-	//		return
-	//	}
-	//	atomic.AddUint64(&ItemListedCount, 1)
-	//	//fmt.Println("list:", event.Payload.Item.NftId)
-	//})
+	client.OnItemListed("*", func(response any) {
+		var event stream.ItemListedEvent
+		err := mapstructure.Decode(response, &event)
+		if err != nil {
+			fmt.Println("mapstructure.Decode err:", err)
+			return
+		}
+		//atomic.AddUint64(&ItemListedCount, 1)
+		fmt.Println("list:", event.Payload.Item.NftId)
+	})
 
 	//startTime := time.Now()
 	//

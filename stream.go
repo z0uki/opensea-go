@@ -30,7 +30,7 @@ const (
 
 type StreamClient struct {
 	socket   *phx.Socket
-	channels map[string]*phx.Channel
+	channels map[EventType]*phx.Channel
 }
 
 func NewStreamClient(network Network, token string, logLevel phx.LoggerLevel, onError func(error)) *StreamClient {
@@ -53,7 +53,7 @@ func NewStreamClient(network Network, token string, logLevel phx.LoggerLevel, on
 	socket.Logger = phx.NewSimpleLogger(logLevel)
 	return &StreamClient{
 		socket:   socket,
-		channels: make(map[string]*phx.Channel),
+		channels: make(map[EventType]*phx.Channel),
 	}
 }
 
@@ -64,10 +64,10 @@ func (s StreamClient) Connect() error {
 func (s *StreamClient) Disconnect() error {
 	//s.socket.OnError()
 	fmt.Println("Succesfully disconnected from socket")
-	s.channels = make(map[string]*phx.Channel)
+	s.channels = make(map[EventType]*phx.Channel)
 	return s.socket.Disconnect()
 }
-func (s *StreamClient) createChannel(topic string) (channel *phx.Channel) {
+func (s *StreamClient) createChannel(topic string, eventType EventType) (channel *phx.Channel) {
 	channel = s.socket.Channel(topic, nil)
 	join, err := channel.Join()
 	if err != nil {
@@ -80,14 +80,15 @@ func (s *StreamClient) createChannel(topic string) (channel *phx.Channel) {
 	join.Receive("error", func(response any) {
 		log.Println("failed 2 joined channel:", channel.Topic(), response)
 	})
-	s.channels[topic] = channel
+	s.channels[eventType] = channel
 	return
 }
-func (s StreamClient) getChannel(topic string) (channel *phx.Channel) {
+
+func (s StreamClient) getChannel(topic string, eventType EventType) (channel *phx.Channel) {
 	var ok bool
-	channel, ok = s.channels[topic]
+	channel, ok = s.channels[eventType]
 	if !ok {
-		channel = s.createChannel(topic)
+		channel = s.createChannel(topic, eventType)
 	}
 	return channel
 }
@@ -95,7 +96,7 @@ func (s StreamClient) getChannel(topic string) (channel *phx.Channel) {
 func (s StreamClient) on(eventType EventType, collectionSlug string, callback func(payload any)) func() {
 	topic := collectionTopic(collectionSlug)
 	fmt.Printf("Fetching channel %s\n", topic)
-	channel := s.getChannel(topic)
+	channel := s.getChannel(topic, eventType)
 	fmt.Printf("Subscribing to %s events on %s\n", eventType, topic)
 	channel.On(string(eventType), callback)
 	return func() {
@@ -105,7 +106,7 @@ func (s StreamClient) on(eventType EventType, collectionSlug string, callback fu
 			fmt.Println("channel.Leave err:", err)
 		}
 		leave.Receive("ok", func(response any) {
-			delete(s.channels, collectionSlug)
+			delete(s.channels, eventType)
 			fmt.Printf("Succesfully left channel %s listening for %s\n", topic, eventType)
 		})
 	}

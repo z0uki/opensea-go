@@ -14,6 +14,8 @@ require (
 	github.com/tidwall/gjson v1.14.4
 )
 
+replace github.com/nshafer/phx v0.2.0 => github.com/z0uki/phx v0.0.0-20230413084344-05e78c5b0220
+
 require (
 	github.com/StackExchange/wmi v0.0.0-20210224194228-fe8f1750fd46 // indirect
 	github.com/btcsuite/btcd v0.22.1 // indirect

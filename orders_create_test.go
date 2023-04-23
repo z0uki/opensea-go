@@ -35,9 +35,9 @@ func TestOrdersCreateCollectionOffer(t *testing.T) {
 
 func TestOrdersCreateListings(t *testing.T) {
 	req := OrdersCreateListingsRequest{
-		TokenAddress:      "0x71f67624a8b2f6310e0bc538ff78f843e1d9ee6e",
-		TokenId:           big.NewInt(158),
-		PriceWei:          big.NewInt(110000000000000000),
+		TokenAddress:      "0x3a40312a1c376aecf855ef784371d1fb1aa2d25d",
+		TokenId:           big.NewInt(89),
+		PriceWei:          big.NewInt(100000000000000000),
 		ExpirationSeconds: big.NewInt(3600),
 	}
 

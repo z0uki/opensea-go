@@ -29,7 +29,6 @@ func (c *Client) OrdersCreateListings(req *OrdersCreateListingsRequest) (*Orders
 	if err != nil {
 		return nil, err
 	}
-	var creatorBasisPoints = big.NewInt(int64(contract.DevSellerFeeBasisPoints))
 	var creatorFees = contract.Collection.Fees.SellerFees
 	//获取合约类型 erc721 or erc1155
 	var contractType uint8
@@ -57,7 +56,7 @@ func (c *Client) OrdersCreateListings(req *OrdersCreateListingsRequest) (*Orders
 	}
 
 	// 3. 构建订单
-	order, err := c.buildSellOrder(req, creatorBasisPoints, creatorFees, contractType)
+	order, err := c.buildSellOrder(req, creatorFees, contractType)
 	if err != nil {
 		return nil, err
 	}
@@ -139,21 +138,29 @@ type OrdersCreateCollectionOfferResponse struct {
 	ProtocolData *model.Protocol `json:"protocol_data"`
 }
 
-func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorBasisPoints *big.Int, creatorFees *model.Fee, contractType uint8) (*model.Protocol, error) {
+func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorFees *model.Fee, contractType uint8) (*model.Protocol, error) {
 	startTime := time.Now().Unix()
 	endTime := startTime + req.ExpirationSeconds.Int64()
 	rand.Seed(time.Now().UnixNano())
 	salt := rand.Int63n(1000000000)
+	platformFeePoints := big.NewInt(250)
 
 	sellerFee := model.ConsiderationItem{
 		ItemType:             ItemType_NATIVE,
 		Token:                ZeroAddress,
 		IdentifierOrCriteria: "0",
-		StartAmount:          strconv.FormatInt(CalcEarnings(req.PriceWei, creatorBasisPoints), 10),
-		EndAmount:            strconv.FormatInt(CalcEarnings(req.PriceWei, creatorBasisPoints), 10),
+		StartAmount:          strconv.FormatInt(CalcEarnings(req.PriceWei, platformFeePoints), 10),
+		EndAmount:            strconv.FormatInt(CalcEarnings(req.PriceWei, platformFeePoints), 10),
 		Recipient:            c.Wallet.Address.Hex(),
 	}
-
+	platformFee := model.ConsiderationItem{
+		ItemType:             ItemType_NATIVE,
+		Token:                ZeroAddress,
+		IdentifierOrCriteria: "0",
+		StartAmount:          strconv.FormatInt(CalcOpenSeaFeeByBasePrice(req.PriceWei), 10),
+		EndAmount:            strconv.FormatInt(CalcOpenSeaFeeByBasePrice(req.PriceWei), 10),
+		Recipient:            OpenSeaFeeRecipient,
+	}
 	// opensea 修改了协议，不再需要手续费
 	//platformFee := model.ConsiderationItem{
 	//	ItemType:             ItemType_NATIVE,
@@ -163,8 +170,7 @@ func (c *Client) buildSellOrder(req *OrdersCreateListingsRequest, creatorBasisPo
 	//	EndAmount:            strconv.FormatInt(CalcOpenSeaFeeByBasePrice(req.PriceWei), 10),
 	//	Recipient:            OpenSeaFeeRecipient,
 	//}
-
-	considerations := []model.ConsiderationItem{sellerFee}
+	considerations := []model.ConsiderationItem{sellerFee, platformFee}
 
 	for recipient, points := range *creatorFees {
 		collectionSellerFees := model.ConsiderationItem{

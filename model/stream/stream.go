@@ -128,10 +128,34 @@ type ItemCancelledEventPayload struct {
 	//PaymentToken       PaymentToken `mapstructure:"payment_token"`
 	//EventTimestamp     string       `mapstructure:"event_timestamp"`
 }
+
+type ItemInvalidationEvent struct {
+	Chain          Chain                        `mapstructure:"chain"`
+	EventTimestamp string                       `mapstructure:"event_timestamp"`
+	Payload        ItemInvalidationEventPayload `mapstructure:"payload"`
+}
+
+type ItemInvalidationEventPayload struct {
+	OrderHash       string `mapstructure:"order_hash"`
+	ProtocolAddress string `mapstructure:"protocol_address"`
+}
+
+type ItemRevalidationEvent struct {
+	Chain          Chain                        `mapstructure:"chain"`
+	EventTimestamp string                       `mapstructure:"event_timestamp"`
+	Payload        ItemRevalidationEventPayload `mapstructure:"payload"`
+}
+
+type ItemRevalidationEventPayload struct {
+	OrderHash       string `mapstructure:"order_hash"`
+	ProtocolAddress string `mapstructure:"protocol_address"`
+}
+
 type ItemMetadataUpdateEvent struct {
 	BaseStreamMessage `mapstructure:",squash"`
 	Payload           ItemMetadataUpdatePayload `mapstructure:"payload"`
 }
+
 type ItemMetadataUpdatePayload struct {
 	PayloadItemAndColl   `mapstructure:",squash"`
 	BaseItemMetadataType `mapstructure:",squash"`

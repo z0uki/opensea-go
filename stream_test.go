@@ -2,11 +2,12 @@ package opensea
 
 import (
 	"fmt"
+	"os"
+	"testing"
+
 	"github.com/mitchellh/mapstructure"
 	"github.com/nshafer/phx"
 	"github.com/z0uki/opensea-go/model/stream"
-	"os"
-	"testing"
 )
 
 var (
@@ -100,6 +101,28 @@ func TestNewStreamClient(t *testing.T) {
 	//	log.Printf("挂单数量: %d, 收到bid数量: %d, 收到collection_offer数量: %d 运行时间: %fs\n", ItemListedCount, ItemReceivedBidCount, CollectionOfferCount, time.Now().Sub(startTime).Seconds())
 	//	time.Sleep(time.Second * 1)
 	//}
+
+	select {}
+}
+
+func TestName(t *testing.T) {
+	client := NewStreamClient(MAINNET, os.Getenv("API_KEY"), phx.LogInfo, func(err error) {
+		fmt.Println("opensea.NewStreamClient err:", err)
+	})
+	if err := client.Connect(); err != nil {
+		fmt.Println("client.Connect err:", err)
+		return
+	}
+
+	client.OnItemInvalidation("*", func(response any) {
+		var event stream.ItemInvalidationEvent
+		err := mapstructure.Decode(response, &event)
+		if err != nil {
+			fmt.Println("mapstructure.Decode err:", err)
+			return
+		}
+		fmt.Println(event.Payload.OrderHash, event.Payload.ProtocolAddress)
+	})
 
 	select {}
 }

@@ -18,6 +18,8 @@ const (
 	ItemReceivedOffer   EventType = "item_received_offer"
 	ItemReceivedBid     EventType = "item_received_bid"
 	ItemCancelled       EventType = "item_cancelled"
+	ItemInvalidation    EventType = "order_invalidate"
+	ItemRevalidation    EventType = "order_revalidate"
 	CollectionOffer     EventType = "collection_offer"
 )
 
@@ -140,4 +142,12 @@ func (s StreamClient) OnItemMetadataUpdated(collectionSlug string, Callback func
 }
 func (s StreamClient) OnCollectionOffer(Callback func(collectionOfferEvent any)) func() {
 	return s.on(CollectionOffer, "*", Callback)
+}
+
+func (s StreamClient) OnItemInvalidation(collectionSlug string, Callback func(itemInvalidationEvent any)) func() {
+	return s.on(ItemInvalidation, collectionSlug, Callback)
+}
+
+func (s StreamClient) OnItemRevalidation(collectionSlug string, Callback func(itemRevalidationEvent any)) func() {
+	return s.on(ItemRevalidation, collectionSlug, Callback)
 }
